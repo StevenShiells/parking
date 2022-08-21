@@ -2,13 +2,20 @@
 
 namespace ParkingCalculator.FeeCalculators
 {
-    internal class LongStayFeeCalculator : FeeCalculator
+    public class LongStayFeeCalculator : FeeCalculator
     {
+        private IDateUtil _dateUtil;
+
+        public LongStayFeeCalculator(IDateUtil dateUtil)
+        {
+            _dateUtil = dateUtil;
+        }
+
         public override decimal UnitFee => 7.5m;
 
         public override decimal GetChargableUnits(DateTime start, DateTime end)
         {
-            return DateUtil.GetNumberOfDaysBetween(start, end);
+            return _dateUtil.GetNumberOfDaysBetween(start, end);
         }
     }
 }

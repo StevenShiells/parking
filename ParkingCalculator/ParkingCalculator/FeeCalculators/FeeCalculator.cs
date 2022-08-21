@@ -1,6 +1,6 @@
 ﻿namespace ParkingCalculator.FeeCalculators
 {
-    internal abstract class FeeCalculator : IFeeCalculator
+    public abstract class FeeCalculator : IFeeCalculator
     {
         public abstract decimal UnitFee { get; }
 
