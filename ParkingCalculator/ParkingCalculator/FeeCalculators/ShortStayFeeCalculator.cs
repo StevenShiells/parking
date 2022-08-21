@@ -2,17 +2,24 @@
 
 namespace ParkingCalculator.FeeCalculators
 {
-    internal class ShortStayFeeCalculator : FeeCalculator
+    public class ShortStayFeeCalculator : FeeCalculator
     {
-        private TimeSpan From => new TimeSpan(8, 0, 0);
+        public TimeSpan From => new TimeSpan(8, 0, 0);
 
-        private TimeSpan To => new TimeSpan(18, 0, 0);
+        public TimeSpan To => new TimeSpan(18, 0, 0);
 
         public override decimal UnitFee => 1.1m;
 
+        private IDateUtil _dateUtil;
+
+        public ShortStayFeeCalculator(IDateUtil dateUtil)
+        {
+            _dateUtil = dateUtil;
+        }
+
         public override decimal GetChargableUnits(DateTime start, DateTime end)
         {
-            return DateUtil.GetNumberOfHoursBetween(start, end, From, To, true);
+            return _dateUtil.GetNumberOfHoursBetween(start, end, From, To, true);
         }
     }
 }

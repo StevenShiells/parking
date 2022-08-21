@@ -1,11 +1,11 @@
 ﻿namespace ParkingCalculator.Utils
 {
-    internal class DateUtil
+    public class DateUtil : IDateUtil
     {
         private static TimeSpan DAY_START = new TimeSpan();
         private static TimeSpan DAY_END = new TimeSpan(23,59,59);
 
-        public static decimal GetNumberOfHoursBetween(DateTime start, DateTime end, TimeSpan targetStartTime, TimeSpan targetEndTime, bool skipWeekends)
+        public decimal GetNumberOfHoursBetween(DateTime start, DateTime end, TimeSpan targetStartTime, TimeSpan targetEndTime, bool skipWeekends)
         {
             ValidateDateArguments(start, end);
 
@@ -27,7 +27,7 @@
             return total;
         }
 
-        public static decimal GetNumberOfDaysBetween(DateTime start, DateTime end)
+        public decimal GetNumberOfDaysBetween(DateTime start, DateTime end)
         {
             ValidateDateArguments(start, end);
 
@@ -50,7 +50,7 @@
             return total;
         }
 
-        private static decimal GetNumberOfHoursInWindow(DateTime start, DateTime end, TimeSpan targetStartTime, TimeSpan targetEndTime)
+        internal decimal GetNumberOfHoursInWindow(DateTime start, DateTime end, TimeSpan targetStartTime, TimeSpan targetEndTime)
         {
             // Calculate the start and end points of the target window.
             var targetStart = start.Date.Add(targetStartTime);
@@ -72,7 +72,7 @@
             return diff.Hours + (residualMinutes / 60.0m);
         }
 
-        private static void ValidateDateArguments(DateTime start, DateTime end)
+        internal void ValidateDateArguments(DateTime start, DateTime end)
         {
             if(start.CompareTo(end) >= 0)
             {
@@ -83,13 +83,13 @@
             }
         }
 
-        private static bool IncludeDate(DateTime date, bool skipWeekends)
+        internal bool IncludeDate(DateTime date, bool skipWeekends)
         {
             var skipDate =  skipWeekends && (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday);
             return !skipDate;
         }
 
-        private static DateTime IncrementDate(DateTime date)
+        internal DateTime IncrementDate(DateTime date)
         {
             date = date.AddDays(1);
             // Resetting working date to be the start of the day so all iterations
