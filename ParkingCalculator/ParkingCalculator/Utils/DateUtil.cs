@@ -18,7 +18,8 @@
                 // If we are skipping weekends and the working day is a Saturday or Sunday then ignore
                 if (IncludeDate(workingDate, skipWeekends))
                 {
-                    total += GetNumberOfHoursInWindow(workingDate, workingDate.Date.AddDays(1), targetStartTime, targetEndTime);
+                    var to = workingDate.Date.AddDays(1) < end ? workingDate.Date.AddDays(1) : end;
+                    total += GetNumberOfHoursInWindow(workingDate, to, targetStartTime, targetEndTime);
                 }
                 
                 workingDate = IncrementDate(workingDate);
@@ -37,7 +38,8 @@
 
             while(workingDate < end)
             {
-                var partOfDay = GetNumberOfHoursInWindow(workingDate, workingDate.Date.AddDays(1), DAY_START, DAY_END);
+                var to = workingDate.Date.AddDays(1) < end ? workingDate.Date.AddDays(1) : end;
+                var partOfDay = GetNumberOfHoursInWindow(workingDate, to, DAY_START, DAY_END);
                 // if any part of the day falls within the window add 1 full day.
                 if(partOfDay > 0)
                 {
@@ -65,6 +67,11 @@
             var countingEnd = targetEnd < end ? targetEnd : end;
 
             var diff = countingEnd - countingStart;
+
+            if(diff.TotalMilliseconds < 0)
+            {
+                return 0;
+            }
 
             var residualMinutes = diff.Minutes % 60;
 
